@@ -1,5 +1,6 @@
 import { AssignmentsExamsBreakdown } from "../assignments-exams-breakdown";
 import { getCurrentUser } from "@/lib/auth";
+import { CourseSummaryDisplay } from "./course-summary-display";
 import { StudyPlanGenerator } from "./study-plan-generator";
 import { LoadingErrorHandlingWorkflow } from "./loading-error-handling-workflow";
 
@@ -36,7 +37,7 @@ export default async function AppShellPage() {
             Upload syllabus
           </h2>
           <p className="mt-3 text-sm font-medium uppercase tracking-wide text-slate-500">
-            Loading & Error Handling
+            Course Summary Display · Loading & Error Handling
           </p>
           <p className="mt-3 text-base leading-7 text-slate-700">
             No syllabus uploaded yet. Start by pasting your syllabus on the home
@@ -44,6 +45,7 @@ export default async function AppShellPage() {
             a syllabus is saved.
           </p>
         </div>
+        <CourseSummaryDisplay />
         <LoadingErrorHandlingWorkflow />
       </section>
 
