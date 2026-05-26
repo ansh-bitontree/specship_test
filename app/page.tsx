@@ -1,3 +1,5 @@
+import { TopicsDatesSection } from "./topics-dates-section";
+
 export default function Home() {
   return (
     <main className="mx-auto flex min-h-screen max-w-5xl flex-col justify-center px-6 py-12">
@@ -11,6 +13,7 @@ export default function Home() {
         The app is prepared for future course summaries, topics, dates,
         assignments, exams, and generated study plans.
       </p>
+      <TopicsDatesSection />
     </main>
   );
 }
