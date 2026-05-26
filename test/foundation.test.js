@@ -48,18 +48,9 @@ test("database client setup is reusable from a server-side module", () => {
   assert.match(dbModule, /export\s+(const\s+)?db/);
 });
 
-test("prisma schema defines the initial syllabus study data model", () => {
+test("prisma schema defines the initial chat data model", () => {
   const schema = read("prisma/schema.prisma");
-  const models = [
-    "User",
-    "Syllabus",
-    "CourseSummary",
-    "Topic",
-    "ImportantDate",
-    "Assignment",
-    "Exam",
-    "StudyPlan",
-  ];
+  const models = ["Message", "ChatHistory", "ApiRequest", "ApiResponse", "UserSettings"];
 
   assert.match(schema, /provider\s+=\s+"postgresql"/);
 
@@ -67,10 +58,13 @@ test("prisma schema defines the initial syllabus study data model", () => {
     assert.match(schema, new RegExp(`model\\s+${model}\\s+{`));
   }
 
-  assert.match(schema, /courseSummary\s+CourseSummary\?/);
-  assert.match(schema, /topics\s+Topic\[\]/);
-  assert.match(schema, /importantDates\s+ImportantDate\[\]/);
-  assert.match(schema, /assignments\s+Assignment\[\]/);
-  assert.match(schema, /exams\s+Exam\[\]/);
-  assert.match(schema, /studyPlans\s+StudyPlan\[\]/);
+  assert.match(schema, /messages\s+Message\[\]/);
+  assert.match(schema, /chatHistory\s+ChatHistory\s+@relation/);
+  assert.match(schema, /apiRequest\s+ApiRequest\?/);
+  assert.match(schema, /response\s+ApiResponse\?/);
+  assert.match(schema, /userSettings\s+UserSettings\?/);
+});
+
+test("a first schema artifact exists for the approved data model", () => {
+  assert.ok(fs.existsSync(path.join(root, "prisma", "schema.prisma")));
 });
