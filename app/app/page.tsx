@@ -1,3 +1,4 @@
+import { AssignmentsExamsBreakdown } from "../assignments-exams-breakdown";
 import { getCurrentUser } from "@/lib/auth";
 
 export default async function AppShellPage() {
@@ -17,7 +18,7 @@ export default async function AppShellPage() {
         <p className="text-sm text-slate-600">{user?.email}</p>
       </header>
 
-      <section className="grid flex-1 place-items-center py-16">
+      <section className="grid place-items-center py-12">
         <div className="max-w-xl text-center">
           <h2 className="text-2xl font-semibold tracking-normal text-slate-950">
             Upload syllabus
@@ -28,6 +29,8 @@ export default async function AppShellPage() {
           </p>
         </div>
       </section>
+
+      <AssignmentsExamsBreakdown />
     </main>
   );
 }
