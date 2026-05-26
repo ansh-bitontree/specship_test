@@ -4,8 +4,8 @@ export default async function AppShellPage() {
   const user = await getCurrentUser();
 
   return (
-    <main className="mx-auto flex min-h-screen max-w-5xl flex-col px-6 py-10">
-      <header className="flex items-center justify-between border-b border-slate-200 pb-5">
+    <main className="mx-auto flex min-h-screen max-w-5xl flex-col px-4 py-8 sm:px-6 sm:py-10">
+      <header className="flex flex-col gap-4 border-b border-slate-200 pb-5 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <p className="text-sm font-medium uppercase tracking-wide text-slate-500">
             Syllabus Snap
@@ -14,7 +14,7 @@ export default async function AppShellPage() {
             Study workspace
           </h1>
         </div>
-        <p className="text-sm text-slate-600">{user?.email}</p>
+        <p className="break-all text-sm text-slate-600">{user?.email}</p>
       </header>
 
       <section className="grid flex-1 place-items-center py-16">
@@ -23,8 +23,9 @@ export default async function AppShellPage() {
             Upload syllabus
           </h2>
           <p className="mt-3 text-base leading-7 text-slate-700">
-            Your protected workspace is ready for syllabus uploads, extraction,
-            and study planning.
+            No syllabus uploaded yet. Start by pasting your syllabus on the home
+            page. Your workspace is ready for extraction and study planning once
+            a syllabus is saved.
           </p>
         </div>
       </section>
