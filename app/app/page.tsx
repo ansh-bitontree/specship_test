@@ -1,3 +1,4 @@
+import { AssignmentsExamsBreakdown } from "../assignments-exams-breakdown";
 import { getCurrentUser } from "@/lib/auth";
 import { LoadingErrorHandlingWorkflow } from "./loading-error-handling-workflow";
 
@@ -18,8 +19,8 @@ export default async function AppShellPage() {
         <p className="break-all text-sm text-slate-600">{user?.email}</p>
       </header>
 
-      <section className="grid flex-1 gap-8 py-12">
-        <div className="max-w-xl">
+      <section className="grid place-items-center py-12">
+        <div className="max-w-xl text-center">
           <h2 className="text-2xl font-semibold tracking-normal text-slate-950">
             Upload syllabus
           </h2>
@@ -34,6 +35,8 @@ export default async function AppShellPage() {
         </div>
         <LoadingErrorHandlingWorkflow />
       </section>
+
+      <AssignmentsExamsBreakdown />
     </main>
   );
 }
