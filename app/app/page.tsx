@@ -1,4 +1,5 @@
 import { getCurrentUser } from "@/lib/auth";
+import { StudyPlanGenerator } from "./study-plan-generator";
 
 export default async function AppShellPage() {
   const user = await getCurrentUser();
@@ -17,6 +18,15 @@ export default async function AppShellPage() {
         <p className="break-all text-sm text-slate-600">{user?.email}</p>
       </header>
 
+      <nav className="mt-5">
+        <a
+          className="text-sm font-medium text-slate-700 underline underline-offset-4"
+          href="#study-plan-generator"
+        >
+          Study Plan Generator
+        </a>
+      </nav>
+
       <section className="grid flex-1 place-items-center py-16">
         <div className="max-w-xl text-center">
           <h2 className="text-2xl font-semibold tracking-normal text-slate-950">
@@ -29,6 +39,8 @@ export default async function AppShellPage() {
           </p>
         </div>
       </section>
+
+      <StudyPlanGenerator />
     </main>
   );
 }
