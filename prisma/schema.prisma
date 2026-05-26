@@ -7,147 +7,79 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum DateCategory {
-  LECTURE
-  HOLIDAY
-  DEADLINE
-  EXAM
-  OTHER
+enum MessageRole {
+  SYSTEM
+  USER
+  ASSISTANT
+  TOOL
 }
 
-enum AssignmentStatus {
-  NOT_STARTED
-  IN_PROGRESS
-  SUBMITTED
-  GRADED
+enum ApiRequestStatus {
+  PENDING
+  SUCCEEDED
+  FAILED
 }
 
-enum ExamType {
-  QUIZ
-  MIDTERM
-  FINAL
-  OTHER
+model ChatHistory {
+  id           String        @id @default(cuid())
+  title        String?
+  messages     Message[]
+  userSettings UserSettings?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
 }
 
-model User {
-  id          String      @id @default(cuid())
-  email       String      @unique
-  name        String?
-  syllabi     Syllabus[]
-  studyPlans  StudyPlan[]
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+model Message {
+  id            String       @id @default(cuid())
+  chatHistoryId String
+  role          MessageRole
+  content       String
+  metadata      Json?
+  chatHistory   ChatHistory  @relation(fields: [chatHistoryId], references: [id], onDelete: Cascade)
+  apiRequest    ApiRequest?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  @@index([chatHistoryId])
+  @@index([createdAt])
 }
 
-model Syllabus {
-  id             String           @id @default(cuid())
-  userId         String?
-  title          String
-  courseCode     String?
-  instructor     String?
-  term           String?
-  sourceName     String?
-  sourceText     String?
-  user           User?            @relation(fields: [userId], references: [id], onDelete: SetNull)
-  courseSummary  CourseSummary?
-  topics         Topic[]
-  importantDates ImportantDate[]
-  assignments    Assignment[]
-  exams          Exam[]
-  studyPlans     StudyPlan[]
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
-
-  @@index([userId])
-}
-
-model CourseSummary {
-  id          String   @id @default(cuid())
-  syllabusId  String   @unique
-  overview    String
-  objectives  String[]
-  workload    String?
-  grading     Json?
-  syllabus    Syllabus @relation(fields: [syllabusId], references: [id], onDelete: Cascade)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-}
-
-model Topic {
-  id          String   @id @default(cuid())
-  syllabusId  String
-  title       String
-  description String?
-  week        Int?
-  order       Int      @default(0)
-  syllabus    Syllabus @relation(fields: [syllabusId], references: [id], onDelete: Cascade)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  @@index([syllabusId])
-}
-
-model ImportantDate {
-  id          String       @id @default(cuid())
-  syllabusId  String
-  title       String
-  date        DateTime
-  category    DateCategory @default(OTHER)
-  notes       String?
-  syllabus    Syllabus     @relation(fields: [syllabusId], references: [id], onDelete: Cascade)
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-
-  @@index([syllabusId])
-  @@index([date])
-}
-
-model Assignment {
+model ApiRequest {
   id          String           @id @default(cuid())
-  syllabusId  String
-  title       String
-  description String?
-  dueDate     DateTime?
-  points      Float?
-  weight      Float?
-  status      AssignmentStatus @default(NOT_STARTED)
-  syllabus    Syllabus         @relation(fields: [syllabusId], references: [id], onDelete: Cascade)
+  messageId   String           @unique
+  provider    String?
+  model       String?
+  endpoint    String
+  method      String           @default("POST")
+  requestBody Json?
+  status      ApiRequestStatus @default(PENDING)
+  message     Message          @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  response    ApiResponse?
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt
 
-  @@index([syllabusId])
-  @@index([dueDate])
+  @@index([status])
 }
 
-model Exam {
-  id          String   @id @default(cuid())
-  syllabusId  String
-  title       String
-  examType    ExamType @default(OTHER)
-  date        DateTime?
-  location    String?
-  weight      Float?
-  syllabus    Syllabus @relation(fields: [syllabusId], references: [id], onDelete: Cascade)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  @@index([syllabusId])
-  @@index([date])
+model ApiResponse {
+  id            String     @id @default(cuid())
+  apiRequestId  String     @unique
+  statusCode    Int?
+  responseBody  Json?
+  error         String?
+  durationMs    Int?
+  apiRequest    ApiRequest @relation(fields: [apiRequestId], references: [id], onDelete: Cascade)
+  createdAt     DateTime   @default(now())
 }
 
-model StudyPlan {
-  id          String   @id @default(cuid())
-  syllabusId  String
-  userId      String?
-  title       String
-  startsAt    DateTime?
-  endsAt      DateTime?
-  plan        Json
-  syllabus    Syllabus @relation(fields: [syllabusId], references: [id], onDelete: Cascade)
-  user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  @@index([syllabusId])
-  @@index([userId])
+model UserSettings {
+  id             String      @id @default(cuid())
+  chatHistoryId  String      @unique
+  preferredModel String?
+  systemPrompt   String?
+  temperature    Float?
+  settings       Json?
+  chatHistory    ChatHistory @relation(fields: [chatHistoryId], references: [id], onDelete: Cascade)
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
 }

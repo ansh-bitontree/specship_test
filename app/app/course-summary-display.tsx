@@ -20,9 +20,7 @@ export function CourseSummaryDisplay() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    const storedSummary = localStorage.getItem(
-      "syllabus-study-planner:course-summary",
-    );
+    const storedSummary = localStorage.getItem("syllabus-study-planner:course-summary");
 
     if (storedSummary) {
       setCourseSummary(JSON.parse(storedSummary) as CourseSummary);

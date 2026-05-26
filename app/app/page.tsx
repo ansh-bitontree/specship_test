@@ -31,7 +31,6 @@ export default async function AppShellPage() {
         </a>
       </nav>
 
-      <section className="grid flex-1 place-items-center py-16">
       <section className="grid place-items-center py-12">
         <div className="max-w-xl text-center">
           <h2 className="text-2xl font-semibold tracking-normal text-slate-950">
