@@ -1,3 +1,4 @@
+import { TopicsDatesSection } from "./topics-dates-section";
 import { SyllabusTextInput } from "./syllabus-text-input";
 
 export default function Home() {
@@ -13,6 +14,7 @@ export default function Home() {
         Paste your course syllabus to start organizing topics, assignments,
         exams, and study plan details.
       </p>
+      <TopicsDatesSection />
       <SyllabusTextInput />
     </main>
   );
