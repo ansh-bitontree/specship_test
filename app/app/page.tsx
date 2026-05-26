@@ -1,5 +1,8 @@
+import { AssignmentsExamsBreakdown } from "../assignments-exams-breakdown";
 import { getCurrentUser } from "@/lib/auth";
 import { AiSummaryGeneration } from "./ai-summary-generation";
+import { CourseSummaryDisplay } from "./course-summary-display";
+import { StudyPlanGenerator } from "./study-plan-generator";
 import { LoadingErrorHandlingWorkflow } from "./loading-error-handling-workflow";
 
 export default async function AppShellPage() {
@@ -19,13 +22,24 @@ export default async function AppShellPage() {
         <p className="break-all text-sm text-slate-600">{user?.email}</p>
       </header>
 
-      <section className="grid flex-1 gap-8 py-12">
-        <div className="max-w-xl">
+      <nav className="mt-5">
+        <a
+          className="text-sm font-medium text-slate-700 underline underline-offset-4"
+          href="#study-plan-generator"
+        >
+          Study Plan Generator
+        </a>
+      </nav>
+
+      <section className="grid flex-1 place-items-center py-16">
+      <section className="grid place-items-center py-12">
+        <div className="max-w-xl text-center">
           <h2 className="text-2xl font-semibold tracking-normal text-slate-950">
             Upload syllabus
           </h2>
           <p className="mt-3 text-sm font-medium uppercase tracking-wide text-slate-500">
             AI Summary Generation · Loading & Error Handling
+            Course Summary Display · Loading & Error Handling
           </p>
           <p className="mt-3 text-base leading-7 text-slate-700">
             No syllabus uploaded yet. Start by pasting your syllabus on the home
@@ -34,8 +48,12 @@ export default async function AppShellPage() {
           </p>
         </div>
         <AiSummaryGeneration />
+        <CourseSummaryDisplay />
         <LoadingErrorHandlingWorkflow />
       </section>
+
+      <StudyPlanGenerator />
+      <AssignmentsExamsBreakdown />
     </main>
   );
 }
